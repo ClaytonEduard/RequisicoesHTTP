@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
         botaoRecuperar = findViewById(R.id.buttonRecuperar);
         textoResultado = findViewById(R.id.textResultado);
-        textoCep = findViewById(R.id.textoCep);
+        //textoCep = findViewById(R.id.textoCep);
 
         botaoRecuperar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,9 +48,9 @@ public class MainActivity extends AppCompatActivity {
                 //String cep = "75535210";
                 //String moeda = "USD";
                 //String urlApi = "https://blockchain.info/tobtc?currency="+moeda+"&value=500";
-                String urlCep = "https://viacep.com.br/ws/" + textoCep.getText() + "/json";
-                task.execute(urlCep);
-                //task.execute(urlAPI);
+                //String urlCep = "https://viacep.com.br/ws/" + textoCep.getText() + "/json";
+                //task.execute(urlCep);
+                task.execute(urlAPI);
 
             }
         });
@@ -101,29 +101,43 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String resultado) {
             super.onPostExecute(resultado);
-            String logradouro = null;
+         /*   String logradouro = null;
             String cep = null;
             String complemento = null;
             String bairro = null;
             String localidade = null;
             String uf = null;
-
+            */
 
             JSONObject jsonObject = null;
+            String objetoValor = null;
+            JSONObject jsonObjectReal = null;
+            String valorMoeda = null;
+            String simbolo = null;
+
             try {
-                jsonObject = new JSONObject(resultado);
+               /* jsonObject = new JSONObject(resultado);
                 logradouro = jsonObject.getString("logradouro");
                 cep = jsonObject.getString("cep");
                 complemento = jsonObject.getString("complemento");
                 bairro = jsonObject.getString("bairro");
                 localidade = jsonObject.getString("localidade");
-                uf = jsonObject.getString("uf");
+                uf = jsonObject.getString("uf");*/
+
+                jsonObject = new JSONObject(resultado);
+                objetoValor = jsonObject.getString("BRL");
+
+                jsonObjectReal = new JSONObject(objetoValor);
+                valorMoeda = jsonObjectReal.getString("last");
+                simbolo = jsonObjectReal.getString("symbol");
+
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
 
             //textoResultado.setText(resultado);
-            textoResultado.setText(logradouro + " / " + cep + " / " + complemento + " / " + bairro + " / " + localidade + " / " + uf);
+            //textoResultado.setText(logradouro + " / " + cep + " / " + complemento + " / " + bairro + " / " + localidade + " / " + uf);
+            textoResultado.setText(simbolo + " " + valorMoeda);
         }
     }
 
